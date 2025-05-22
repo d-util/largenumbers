@@ -237,16 +237,16 @@ function format_out(flt) {
     if (Math.abs(flt) === Infinity) {
         return "Infinity";
     }
-
-    let out;
-    if ((typeof flt) == "number") {
-        out = parseFloat(flt);
-        if (out == Math.round(out)) {
+    if (typeof flt === "number") {
+        if (isNaN(flt)) return "NaN";
+        let out = parseFloat(flt);
+        if (out === Math.round(out)) {
             out = Math.round(out);
         }
-        out = out.toString();
+        return out.toString();
     }
-    return out;
+    // If flt is not a number, return as string (or "NaN" if you prefer)
+    return String(flt);
 }
 
 function evaluate(expr) {
