@@ -239,7 +239,7 @@ function format_out(flt) {
     }
 
     let out;
-    if (typeof flt === "number") {
+    if ((typeof flt) == "number") {
         out = parseFloat(flt);
         if (out == Math.round(out)) {
             out = Math.round(out);
