@@ -237,7 +237,7 @@ function format_out(flt) {
     if (Math.abs(flt) === Infinity) {
         return "Infinity";
     }
-    let out;
+    let out = 0.0;
     if (typeof flt === "number") {
         if (isNaN(flt)) return "NaN";
         out = parseFloat(flt);
