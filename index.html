@@ -1,10 +1,30 @@
 <!DOCTYPE html>
-  <!--Proper calculator coming soon-->
     <head>
         <title>Calculator</title>
+        <style>
+            body {
+                background-color: black;
+                color: white;
+                font-family: monospace;
+            }
+        </style>
     </head>
     <body>
-        <h1>hyperoperations.sb3</h1>
-        <iframe src="https://scratch.mit.edu/projects/1137093784/embed" allowtransparency="true" width="485" height="402" frameborder="0" scrolling="no" allowfullscreen></iframe>
+        <div id="terminal">
+            Coming soon!<br>
+            UltraCalc 2025 >>> <i>Coming soon...</i> <br>
+        </div>
+        <noscript>
+            Sorry, your browser does not support JavaScript. Check your browser settings and enable JavaScript.
+        </noscript>
+        <script>
+            input.addEventListener("keypress", function(event) {
+                // If the user presses the "Enter" key on the keyboard
+                if (event.key === "Enter") {
+                    // Cancel the default action
+                    event.preventDefault();
+                }
+            });
+        </script>
     </body>
 </html>
