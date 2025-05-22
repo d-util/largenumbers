@@ -101,6 +101,155 @@ function splitexpr(exp) {
     return split.map(s => s.trim())
 }
 
+function prec(c) {
+    // Precedence
+    if (["%", "//"].includes(c)) {
+        return 4;
+    } else if (["^", "rt"].includes(c)) {
+        return 3;
+    } else if (["/", "*"].includes(c)) {
+        return 2;
+    } else if (["+", "-"].includes(c)) {
+        return 1;
+    } else if (["+", "-"].includes(c)) {
+        return 1;
+    } else if (monads.includes(c)) {
+        return 5;
+    } else {
+        return -1;
+    }
+}
+
+// Infix to postfix
+function topostfix(split) {
+    let postfix = [];
+    let stack = [];
+    let c;
+    for (let i = 0; i < split.length; i++) {
+        c = split[i];
+        if (isrealpos(c)) {
+            postfix.push(c);
+        } else if (c === "(") {
+            stack.push(c);
+        } else if (c === ")") {
+            while (stack.length > 0 && stack[stack.length - 1] !== "(") {
+                postfix.push(stack.pop());
+            }
+            stack.pop();
+        } else {
+            while (stack.length > 0 && (prec(c) < prec(stack[stack.length - 1]))) {
+                postfix.push(stack.pop());
+            }
+            stack.push(c);
+        }
+    }
+
+    while (stack.length > 0 && (prec(c) < prec(stack[stack.length - 1]) || prec(split[i]) == prec(stack[stack.length - 1]))) {
+        postfix.push(stack.pop());
+    }
+    return postfix;
+}
+
+function evalpostfix(pf) {
+    let stack = [];
+    for (let i = 0; i < pf.length; i++) {
+        if (isrealpos(pf[i])) {
+            stack.push(parseFloat(pf[i]));
+        } else {
+            let operator = pf[i];
+            let result = 0.0;
+            if (monads.includes(operator)) {
+                let n = parseFloat(stack.pop());
+                if (operator === "!") {
+                    result = factorial(n);
+                } else if (operator === "sqrt") {
+                    result = sqrt(n);
+                } else if (operator === "neg") {
+                    result = neg(n);
+                } else if (operator === "ln") {
+                    result = Math.log(n);
+                } else if (operator === "log") {
+                    result = Math.log10(n);
+                } else if (operator === "exp") {
+                    result = Math.exp(n);
+                } else if (operator === "sin") {
+                    result = sin(n);
+                } else if (operator === "cos") {
+                    result = cos(n);
+                } else if (operator === "tan") {
+                    result = tan(n);
+                } else if (operator === "sinh") {
+                    result = sinh(n);
+                } else if (operator === "cosh") {
+                    result = cosh(n);
+                } else if (operator === "tanh") {
+                    result = tanh(n);
+                } else if (operator === "asin") {
+                    result = asin(n);
+                } else if (operator === "acos") {
+                    result = acos(n);
+                } else if (operator === "atan") {
+                    result = atan(n);
+                } else if (operator === "asinh") {
+                    result = asinh(n);
+                } else if (operator === "acosh") {
+                    result = acosh(n);
+                } else if (operator === "atanh") {
+                    result = atanh(n);
+                } else {
+                    throw new Error("Unknown monad operator: " + operator);
+                }
+                stack.push(result);
+            } else {
+                let n2 = parseFloat(stack.pop());
+                let n1 = parseFloat(stack.pop());
+                if (operator === "+") {
+                    result = n1 + n2;
+                } else if (operator === "-") {
+                    result = n1 - n2;
+                } else if (operator === "*") {
+                    result = n1 * n2;
+                } else if (operator === "/") {
+                    result = n1 / n2;
+                } else if (operator === "^") {
+                    result = Math.pow(n1, n2);
+                } else if (operator === "%") {
+                    result = n1 % n2;
+                } else if (operator === "//") {
+                    result = Math.floor(n1 / n2);
+                } else {
+                    throw new Error("Unknown operator: " + operator);
+                }
+                stack.push(result);
+            }
+        }
+    }
+    return stack[stack.length - 1];
+}
+
+function format_out(flt) {
+    if (Math.abs(flt) === Infinity) {
+        return "Infinity";
+    }
+
+    if (typeof flt === "number") {
+        let out = parseFloat(flt);
+        if (out == Math.round(out)) {
+            out = Math.round(out);
+        }
+        out = out.toString();
+    }
+    return out;
+}
+
+function evaluate(expr) {
+    if ((splitexpr(expr.replace(" ", "")) < 2).length) {
+        return parseFloat(expr);
+    }
+    let ans = evalpostfix(topostfix(splitexpr(expr.replace(" ", ""))));
+    return ans
+}
+
 function parse(input) {
-    return "Coming Soon...";
+    return format_out(evaluate(input));
 }
