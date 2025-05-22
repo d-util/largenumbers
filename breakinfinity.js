@@ -1,3 +1,6 @@
+// BreakInfinity.js
+// A JavaScript library for evaluating mathematical expressions
+
 const is_degrees = false;
 const monads = ["!", "sqrt", "neg", "sin", "cos", "tan",
           "ln", "log", "exp",
