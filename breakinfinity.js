@@ -98,7 +98,7 @@ function splitexpr(exp) {
             }
         }
     }
-    return split.map(o => o.trim())
+    return split.map(s => s.trim())
 }
 
 function parse(input) {
