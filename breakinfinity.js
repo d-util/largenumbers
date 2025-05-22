@@ -6,7 +6,13 @@ const monads = ["!", "sqrt", "neg", "sin", "cos", "tan",
 
 // Additional functions for monad operators
 function factorial(n) {
-    return Math.factorial(n);
+    if (n < 0) return NaN;
+    if (n === 0 || n === 1) return 1;
+    let result = 1;
+    for (let i = 2; i <= n; i++) {
+        result *= i;
+    }
+    return result;
 }
 
 function sqrt(n) {
@@ -232,8 +238,9 @@ function format_out(flt) {
         return "Infinity";
     }
 
+    let out;
     if (typeof flt === "number") {
-        let out = parseFloat(flt);
+        out = parseFloat(flt);
         if (out == Math.round(out)) {
             out = Math.round(out);
         }
