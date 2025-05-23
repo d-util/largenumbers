@@ -8,4 +8,4 @@ Calculation method is perfect for incremental games.
 The reason it's not (1.797e308)! is because currently the "string illusion" is limited to 10^10^21.
 
 ## Exponentiation
-Limit: Powers whose result is less than 1e+(1.797e+308).
+Limit: Powers whose result is less than 1e+1e+21 (used to be 1e+1e+308 but that created many errors, so that commit is now reverted)
