@@ -55,7 +55,7 @@ function addPrompt() {
                     outputLine.textContent = "Error: Result is not a number (NaN)";
                     outputLine.style.color = 'red';
                 } else {
-                    outputLine.textContent = result;
+                    outputLine.innerHTML = result.replace(/\n/g, "<br>");
                     outputLine.style.color = '#888';
                 }
             } catch (err) {
