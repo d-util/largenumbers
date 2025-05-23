@@ -58,7 +58,7 @@ function asinh(value) { return atrigop(value, Math.asinh); }
 function acosh(value) { return atrigop(value, Math.acosh); }
 function atanh(value) { return atrigop(value, Math.atanh); }
 
-function isrealpos(string) {
+function isDigitsOrDot(string) {
     // Is a real positive number
     for (let i = 0; i < string.length; i++) {
         if (string[i] == ".") continue;
@@ -67,7 +67,7 @@ function isrealpos(string) {
     return true;
 }
 
-function splitexpr(exp) {
+function splitExpression(exp) {
     // Split Expression
     let split = [];
     let e = exp.trim();
@@ -87,16 +87,16 @@ function splitexpr(exp) {
                 }
             }
             if (!match_found) {
-                if (isrealpos(e[i])) {
+                if (isDigitsOrDot(e[i])) {
                     let num = "";
-                    while (i < e.length && isrealpos(e[i])) {
+                    while (i < e.length && isDigitsOrDot(e[i])) {
                         num += e[i];
                         i++;
                     }
                     split.push(num);
                 } else if (e[i] === "-" && 
-                    (i === 0 || !isrealpos(e[i - 1])) && 
-                    (i < e.length - 1 && isrealpos(e[i + 1]))
+                    (i === 0 || !isDigitsOrDot(e[i - 1])) && 
+                    (i < e.length - 1 && isDigitsOrDot(e[i + 1]))
                 ) {
                     split.push("neg");
                     i++;
@@ -134,9 +134,10 @@ function topostfix(split) {
     let postfix = [];
     let stack = [];
     let c;
-    for (let i = 0; i < split.length; i++) {
+    let i = 0;
+    for (i = 0; i < split.length; i++) {
         c = split[i];
-        if (isrealpos(c)) {
+        if (isDigitsOrDot(c)) {
             postfix.push(c);
         } else if (c === "(") {
             stack.push(c);
@@ -145,6 +146,9 @@ function topostfix(split) {
                 postfix.push(stack.pop());
             }
             stack.pop();
+        } else if (c === "!") {
+            // Postfix monad: immediately add
+            postfix.push(c);
         } else {
             while (stack.length > 0 && (prec(c) < prec(stack[stack.length - 1]))) {
                 postfix.push(stack.pop());
@@ -162,7 +166,7 @@ function topostfix(split) {
 function evalpostfix(pf) {
     let stack = [];
     for (let i = 0; i < pf.length; i++) {
-        if (isrealpos(pf[i])) {
+        if (isDigitsOrDot(pf[i])) {
             stack.push(parseFloat(pf[i]));
         } else {
             let operator = pf[i];
@@ -254,10 +258,10 @@ function format_out(flt) {
 }
 
 function evaluate(expr) {
-    if ((splitexpr(expr.replace(" ", "")) < 2).length) {
+    if ((splitExpression(expr.replace(" ", "")) < 2).length) {
         return parseFloat(expr);
     }
-    let ans = evalpostfix(topostfix(splitexpr(expr.replace(" ", ""))));
+    let ans = evalpostfix(topostfix(splitExpression(expr.replace(" ", ""))));
     return ans
 }
 
