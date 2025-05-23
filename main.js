@@ -4,6 +4,9 @@ import { evalpostfix, format_out } from './eval.js';
 import { help } from './help.js';
 
 export function evaluate(expr) {
+    if (expr === "") {
+        return "Error: Empty expression";
+    }
     if (splitExpression(expr.replace(/ /g, "")).length < 2) {
         return parseFloat(expr);
     }
@@ -47,12 +50,14 @@ function addPrompt() {
         if (event.key === 'Enter') {
             input.disabled = true;
 
-            // Show output line after the prompt
             const outputLine = document.createElement('div');
             try {
                 const result = parse(input.value);
                 if (result === "NaN") {
                     outputLine.textContent = "Error: Result is not a number (NaN)";
+                    outputLine.style.color = 'red';
+                } else if (typeof result === "string" && result.slice(0, 5) === "Error") {
+                    outputLine.textContent = result;
                     outputLine.style.color = 'red';
                 } else {
                     outputLine.innerHTML = result.replace(/\n/g, "<br>");
