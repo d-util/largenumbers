@@ -11,6 +11,7 @@ export function help() {
     "ln Natural Logarithm\n" +
     "log Base 10 Logarithm\n" +
     "exp Exponential Function\n" +
+    "! Factorial\n" +
     "sin Sine\n" +
     "cos Cosine\n" +
     "tan Tangent\n" +
@@ -22,6 +23,5 @@ export function help() {
     "atan Inverse Tangent\n" +
     "asinh Inverse Hyperbolic Sine\n" +
     "acosh Inverse Hyperbolic Cosine\n" +
-    "atanh Inverse Hyperbolic Tangent\n" +
-    "factorial Factorial\n";
+    "atanh Inverse Hyperbolic Tangent\n";
 }
