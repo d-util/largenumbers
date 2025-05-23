@@ -1,7 +1,7 @@
 <!DOCTYPE html>
     <head>
         <title>Calculator</title>
-        <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <style>
             body {
                 display: flex;
@@ -94,19 +94,26 @@
                 font-family: monospace !important;
             }
 
+            a {
+                color: #fff;
+                text-decoration: none;
+            }
         </style>
     </head>
     <body>
         <nav id="navbar">
-            UltraCalc Online v1.0a42 &sol; <a href="https://d-util.github.io/dcalc">dCalc Python v1.0</a>
+            UltraCalc Online v0.3.13 &sol; <a href="https://d-util.github.io/dcalc">dCalc Python v1.0</a>
         </nav>
         <div id="terminal-container">
             <div id="terminal">
                 <div style="font-size:1.1em;font-family:monospace;color:white;">
-                    Welcome to UltraCalc Online v1.0a42!<br>
+                    Welcome to UltraCalc Online v0.3.13!<br>
                     Don't get limited to 1.797e308...!<br>
                     Type an equation at the prompt and press Enter to calculate.<br>
                     Type "help" for a list of commands.<br>
+                    <noscript>
+                        Sorry, your browser does not support JavaScript. Check your browser settings and enable JavaScript.
+                    </noscript>
                 </div>
             </div>
         </div>
@@ -114,12 +121,14 @@
             <div id="sidescreen-content">
                 <h1>UltraCalc Online</h1>
                 <p>Welcome to UltraCalc Online, a powerful calculator that can handle complex calculations with ease. Type your equations in the prompt below and get instant results!</p>
-                <p>Version &#x2116;: 0.3.11=v1.0a42</p>
+                <p>Version &#x2116;: 0.3.13</p>
+                <h2>Factorials</h2>
+                <p>(5.1865e+19)! is the largest factorial without "Infinity".</p>
+                <p>The reason it's not (1.797e308)! is because currently the "string illusion" is limited to 10^10^21.</p>
+                <h2>Exponentiation</h2>
+                <p>Limit: Powers whose result is less than 1e+1e+21 (used to be 1e+1e+308 but that created many errors, so that commit is now reverted)</p>
             </div>
         </div>
-        <noscript>
-            Sorry, your browser does not support JavaScript. Check your browser settings and enable JavaScript.
-        </noscript>
         <script type="module" src="main.js"></script>
     </body>
 </html>
