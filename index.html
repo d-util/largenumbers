@@ -1,24 +1,80 @@
 <!DOCTYPE html>
     <head>
         <title>Calculator</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
         <style>
             body {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                margin: 0;
+                padding: 0;
+                font-family: Arial, sans-serif;
+            }
+
+            /* Navbar */
+            #navbar {
+                background-color: #333;
+                color: white;
+                text-align: center;
+                border-radius: 5px;
+                padding: 10px;
+                width: 100%;
+                max-height: 10vh;
+                margin-bottom: 5vh;
+            }
+
+            /* Container for sidescreen and terminal */
+            #container {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                width: 100%;
+            }
+
+            /* Sidescreen */
+            #sidescreen {
+                background-color: #f4f4f4;
+                color: black;
+                font-family: Arial, sans-serif;
+                flex: 1;
+                min-width: 200px;
+                margin-left: 10px;
+                margin-right: 10px;
+                min-height: 80vh;
+                border-radius: 5px;
+                border: 4px solid #333;
+                padding: 5vh;
+            }
+
+            /* Terminal */
+            #terminal-container {
                 background-color: black;
                 color: white;
                 font-family: monospace;
-                margin: 0;
-                padding: 0;
+                flex: 1;
+                min-width: 300px;
+                min-height: 80vh;
+                margin-left: 10px;
+                margin-right: 10px;
+                border-radius: 5px;
+                border: 4px solid #333;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 10px;
             }
+
+            /* Terminal text area */
             #terminal {
                 padding: 8px;
                 font-size: 1.1em;
                 word-break: break-word;
                 max-width: 600px;
-                margin: 0 auto;
-                font-family: monospace;
-                color: white;
+                width: 100%;
             }
+
+            /* User input */
             input#prompt {
                 background: black;
                 color: white;
@@ -27,24 +83,38 @@
                 font-family: monospace;
                 width: 100%;
                 font-size: 1.1em;
-                margin-top: 8px;
-                margin-bottom: 8px;
+                margin: 8px 0;
                 box-sizing: border-box;
             }
+
+            /* Output lines */
             #terminal .output-line {
                 color: #888;
                 font-size: 1.1em !important;
                 font-family: monospace !important;
             }
+
         </style>
     </head>
     <body>
-        <div id="terminal">
-            <div style="font-size:1.1em;font-family:monospace;color:white;">
-                Welcome to UltraCalc Online v1.0a41!<br>
-                Don't get limited to 1.797e308...!<br>
-                Type an equation at the prompt and press Enter to calculate.<br>
-                Type "help" for a list of commands.<br>
+        <nav id="navbar">
+            UltraCalc Online v1.0a42 &sol; <a href="https://d-util.github.io/dcalc">dCalc Python v1.0</a>
+        </nav>
+        <div id="terminal-container">
+            <div id="terminal">
+                <div style="font-size:1.1em;font-family:monospace;color:white;">
+                    Welcome to UltraCalc Online v1.0a42!<br>
+                    Don't get limited to 1.797e308...!<br>
+                    Type an equation at the prompt and press Enter to calculate.<br>
+                    Type "help" for a list of commands.<br>
+                </div>
+            </div>
+        </div>
+        <div id="sidescreen">
+            <div id="sidescreen-content">
+                <h1>UltraCalc Online</h1>
+                <p>Welcome to UltraCalc Online, a powerful calculator that can handle complex calculations with ease. Type your equations in the prompt below and get instant results!</p>
+                <p>Version &#x2116;: 0.3.11=v1.0a42</p>
             </div>
         </div>
         <noscript>
