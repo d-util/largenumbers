@@ -27,7 +27,7 @@ function addPrompt() {
 
     // Add prompt line
     const promptLine = document.createElement('div');
-    promptLine.innerHTML = 'dCalc&gt; ';
+    promptLine.innerHTML = '<span style="font-size:1.1em;font-family:monospace;color:white;">dCalc&gt; </span>';
     const input = document.createElement('input');
     input.type = 'text';
     input.id = 'prompt';
@@ -56,6 +56,7 @@ function addPrompt() {
                 outputLine.style.color = 'red';
             }
             outputLine.style.color = outputLine.style.color || '#888';
+            outputLine.className = 'output-line';
             terminal.appendChild(outputLine);
             terminal.appendChild(outputLine);
 

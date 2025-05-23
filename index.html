@@ -1,18 +1,49 @@
 <!DOCTYPE html>
     <head>
         <title>Calculator</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <style>
             body {
                 background-color: black;
                 color: white;
                 font-family: monospace;
+                margin: 0;
+                padding: 0;
+            }
+            #terminal {
+                padding: 8px;
+                font-size: 1.1em;
+                word-break: break-word;
+                max-width: 600px;
+                margin: 0 auto;
+                font-family: monospace;
+                color: white;
+            }
+            input#prompt {
+                background: black;
+                color: white;
+                border: none;
+                outline: none;
+                font-family: monospace;
+                width: 100%;
+                font-size: 1.1em;
+                margin-top: 8px;
+                margin-bottom: 8px;
+                box-sizing: border-box;
+            }
+            #terminal .output-line {
+                color: #888 !important;
+                font-size: 1.1em !important;
+                font-family: monospace !important;
             }
         </style>
     </head>
     <body>
         <div id="terminal">
-            Welcome to dCalc Online v0.3.3!<br>
-            Type an equation at the prompt and press Enter to calculate.<br>
+            <div style="font-size:1.1em;font-family:monospace;color:white;">
+                Welcome to dCalc Online v0.3.4!<br>
+                Type an equation at the prompt and press Enter to calculate.<br>
+            </div>
         </div>
         <noscript>
             Sorry, your browser does not support JavaScript. Check your browser settings and enable JavaScript.
