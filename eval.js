@@ -48,7 +48,11 @@ export function evalpostfix(pf) {
             }
         }
     }
-    return stack[stack.length - 1];
+    let result = stack[stack.length - 1];
+    if (isNaN(result)) {
+        throw new Error("Not a number");
+    }
+    return result
 }
 
 export function format_out(flt) {

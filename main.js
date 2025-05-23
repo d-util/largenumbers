@@ -50,14 +50,19 @@ function addPrompt() {
             // Show output line after the prompt
             const outputLine = document.createElement('div');
             try {
-                outputLine.textContent = parse(input.value);
+                const result = parse(input.value);
+                if (result === "NaN") {
+                    outputLine.textContent = "Error: Result is not a number (NaN)";
+                    outputLine.style.color = 'red';
+                } else {
+                    outputLine.textContent = result;
+                    outputLine.style.color = '#888';
+                }
             } catch (err) {
                 outputLine.textContent = "Error: " + (err.message || err);
                 outputLine.style.color = 'red';
             }
-            outputLine.style.color = outputLine.style.color || '#888';
             outputLine.className = 'output-line';
-            terminal.appendChild(outputLine);
             terminal.appendChild(outputLine);
 
             const extraBlankLine = document.createElement('div');
