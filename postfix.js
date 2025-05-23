@@ -1,4 +1,4 @@
-import { isDigitsOrDot, monads } from './core.js';
+import { isNumberString, monads } from './core.js';
 import { prec } from './parser.js';
 
 export function topostfix(split) {
@@ -7,7 +7,7 @@ export function topostfix(split) {
     let c;
     for (let i = 0; i < split.length; i++) {
         c = split[i];
-        if (isDigitsOrDot(c)) {
+        if (isNumberString(c)) {
             postfix.push(c);
         } else if (c === "(") {
             stack.push(c);

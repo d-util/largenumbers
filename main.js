@@ -27,7 +27,7 @@ function addPrompt() {
 
     // Add prompt line
     const promptLine = document.createElement('div');
-    promptLine.innerHTML = '<span style="font-size:1.1em;font-family:monospace;color:white;">dCalc&gt; </span>';
+    promptLine.innerHTML = '<span style="font-size:1.1em;font-family:monospace;color:white;">UltraCalc&gt; </span>';
     const input = document.createElement('input');
     input.type = 'text';
     input.id = 'prompt';

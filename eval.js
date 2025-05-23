@@ -1,19 +1,46 @@
 import {
-    monads, factorial, sqrt, neg, sin, cos, tan, sinh, cosh, tanh,
-    asin, acos, atan, asinh, acosh, atanh, isDigitsOrDot
+    monads, gamma, sqrt, neg, sin, cos, tan, sinh, cosh, tanh,
+    asin, acos, atan, asinh, acosh, atanh, isNumberString
 } from './core.js';
 
 export function evalpostfix(pf) {
     let stack = [];
     for (let i = 0; i < pf.length; i++) {
-        if (isDigitsOrDot(pf[i])) {
+        if (isNumberString(pf[i])) {
             stack.push(parseFloat(pf[i]));
         } else {
             let operator = pf[i];
             let result = 0.0;
             if (monads.includes(operator)) {
                 let n = parseFloat(stack.pop());
-                if (operator === "!") result = factorial(n);
+                if (operator === "!") {
+                    if (n < 0) {
+                        throw new Error("Factorial not defined for negative numbers");
+                    }
+                    if (n % 1 !== 0) {
+                        // Non-integer: use gamma
+                        result = gamma(n + 1);
+                        if (!isFinite(result) || isNaN(result)) {
+                            // Use Stirling's for very large non-integers
+                            let stirling = Math.sqrt(2 * Math.PI * n) * Math.pow(n / Math.E, n);
+                            result = stirling.toExponential();
+                        }
+                        stack.push(result);
+                    } else if (n < 142) {
+                        // Safe to use gamma for integers up to but not including 142
+                        // due to floating point precision and dividing by large numbers
+                        // in the gamma function
+                        // n < 142 is safe for gamma
+                        result = gamma(n + 1);
+                        stack.push(result);
+                    } else {
+                        // For very large n, use only logarithmic form to avoid Infinity
+                        let log10 = 0.5 * Math.log10(2 * Math.PI * n) + n * (Math.log10(n) - Math.LOG10E);
+                        let mantissa = Math.pow(10, log10 % 1.0);
+                        result = mantissa + "e+" + Math.floor(log10);
+                        stack.push(result);
+                    }
+                }
                 else if (operator === "sqrt") result = sqrt(n);
                 else if (operator === "neg") result = neg(n);
                 else if (operator === "ln") result = Math.log(n);
@@ -32,17 +59,36 @@ export function evalpostfix(pf) {
                 else if (operator === "acosh") result = acosh(n);
                 else if (operator === "atanh") result = atanh(n);
                 else throw new Error("Unknown monad operator: " + operator);
-                stack.push(result);
+                if (operator !== "!") stack.push(result);
             } else {
-                let n2 = parseFloat(stack.pop());
-                let n1 = parseFloat(stack.pop());
+                let n2 = stack.pop();
+                let n1 = stack.pop();
+                if (typeof n1 === "string" || typeof n2 === "string") {
+                    result = n1 + operator + n2;
+                    stack.push(result);
+                    continue;
+                }
+                n1 = parseFloat(n1);
+                n2 = parseFloat(n2);
                 if (operator === "+") result = n1 + n2;
                 else if (operator === "-") result = n1 - n2;
                 else if (operator === "*") result = n1 * n2;
                 else if (operator === "/") result = n1 / n2;
-                else if (operator === "^") result = Math.pow(n1, n2);
+                else if (operator === "^") {
+                    result = Math.pow(n1, n2);
+                    if (!isFinite(result) || isNaN(result)) {
+                        let logarithm = Math.log10(Math.abs(n1)) * n2;
+                        let mantissa = Math.pow(10, logarithm % 1.0);
+                        let sign = (n1 < 0 && n2 % 2 !== 0) ? "-" : "";
+                        result = sign + mantissa.toString() + "e+" + Math.floor(logarithm);
+                    }
+                }
                 else if (operator === "%") result = n1 % n2;
                 else if (operator === "//") result = Math.floor(n1 / n2);
+                else if (operator === "rt") {
+                    if (n2 === 0) throw new Error("Cannot take root of zero");
+                    result = Math.pow(n1, 1 / n2);
+                }
                 else throw new Error("Unknown operator: " + operator);
                 stack.push(result);
             }
@@ -52,21 +98,21 @@ export function evalpostfix(pf) {
     if (isNaN(result)) {
         throw new Error("Not a number");
     }
-    return result
+    return result;
 }
 
 export function format_out(flt) {
-    if (Math.abs(flt) === Infinity) {
-        return "Infinity";
+    if (typeof flt === "string") {
+        return flt;
     }
-    let out = 0.0;
     if (typeof flt === "number") {
+        if (!isFinite(flt)) return "Infinity";
         if (isNaN(flt)) return "NaN";
-        out = parseFloat(flt);
-        if (out === Math.round(out)) {
-            out = Math.round(out);
+        // Only round if it's a "safe" integer
+        if (flt === Math.round(flt) && Math.abs(flt) < 1e16) {
+            return Math.round(flt).toString();
         }
-        return out.toString();
+        return flt.toString();
     }
     return String(flt);
 }

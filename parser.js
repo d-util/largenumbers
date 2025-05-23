@@ -1,4 +1,4 @@
-import { monads, isDigitsOrDot } from './core.js';
+import { monads, isNumberString, isDigit } from './core.js';
 
 export function splitExpression(exp) {
     let split = [];
@@ -19,16 +19,28 @@ export function splitExpression(exp) {
                 }
             }
             if (!match_found) {
-                if (isDigitsOrDot(e[i])) {
-                    let num = "";
-                    while (i < e.length && isDigitsOrDot(e[i])) {
+                if (isDigit(e[i]) || (e[i] === '.' && i + 1 < e.length && isDigit(e[i + 1]))) {
+                    let num = '';
+                    let hasDot = false;
+                    while (i < e.length && (isDigit(e[i]) || (!hasDot && e[i] === '.'))) {
+                        if (e[i] === '.') hasDot = true;
                         num += e[i];
                         i++;
                     }
+                    // Handle scientific notation
+                    if (i < e.length && (e[i] === 'e' || e[i] === 'E')) {
+                        num += e[i++];
+                        if (i < e.length && (e[i] === '+' || e[i] === '-')) {
+                            num += e[i++];
+                        }
+                        while (i < e.length && isDigit(e[i])) {
+                            num += e[i++];
+                        }
+                    }
                     split.push(num);
                 } else if (e[i] === "-" && 
-                    (i === 0 || !isDigitsOrDot(e[i - 1])) && 
-                    (i < e.length - 1 && isDigitsOrDot(e[i + 1]))
+                    (i === 0 || !isNumberString(e[i - 1])) && 
+                    (i < e.length - 1 && isNumberString(e[i + 1]))
                 ) {
                     split.push("neg");
                     i++;
