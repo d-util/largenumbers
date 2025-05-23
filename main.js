@@ -10,8 +10,8 @@ export function evaluate(expr) {
     return ans;
 }
 
-export function parse(input) {
-    return format_out(evaluate(input));
+export function parse(expr) {
+    return format_out(evaluate(expr));
 }
 
 const terminal = document.getElementById('terminal');
