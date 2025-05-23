@@ -78,9 +78,13 @@ export function evalpostfix(pf) {
                     result = Math.pow(n1, n2);
                     if (!isFinite(result) || isNaN(result)) {
                         let logarithm = Math.log10(Math.abs(n1)) * n2;
-                        let mantissa = Math.pow(10, logarithm % 1.0);
-                        let sign = (n1 < 0 && n2 % 2 !== 0) ? "-" : "";
-                        result = sign + mantissa.toString() + "e+" + Math.floor(logarithm);
+                        if (logarithm < 1e+21) {
+                            let mantissa = Math.pow(10, logarithm % 1.0);
+                            let sign = (n1 < 0 && n2 % 2 !== 0) ? "-" : "";
+                            result = sign + mantissa.toString() + "e+" + Math.floor(logarithm);
+                        } else {
+                            result = "1e+" + logarithm.toString();
+                        }
                     }
                 }
                 else if (operator === "%") result = n1 % n2;
