@@ -134,8 +134,7 @@ function topostfix(split) {
     let postfix = [];
     let stack = [];
     let c;
-    let i = 0;
-    for (i = 0; i < split.length; i++) {
+    for (let i = 0; i < split.length; i++) {
         c = split[i];
         if (isDigitsOrDot(c)) {
             postfix.push(c);
@@ -156,8 +155,9 @@ function topostfix(split) {
             stack.push(c);
         }
     }
-
-    while (stack.length > 0 && (prec(c) < prec(stack[stack.length - 1]) || prec(split[i]) == prec(stack[stack.length - 1]))) {
+    
+    // Only pop remaining stack, don't use extra conditions
+    while (stack.length > 0) {
         postfix.push(stack.pop());
     }
     return postfix;
