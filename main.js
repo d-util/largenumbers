@@ -1,6 +1,7 @@
 import { splitExpression } from './parser.js';
 import { topostfix } from './postfix.js';
 import { evalpostfix, format_out } from './eval.js';
+import { help } from './help.js';
 
 export function evaluate(expr) {
     if (splitExpression(expr.replace(/ /g, "")).length < 2) {
@@ -11,6 +12,9 @@ export function evaluate(expr) {
 }
 
 export function parse(expr) {
+    if (expr === "help") {
+        return help();
+    }
     return format_out(evaluate(expr));
 }
 
@@ -23,7 +27,7 @@ function addPrompt() {
 
     // Add prompt line
     const promptLine = document.createElement('div');
-    promptLine.innerHTML = 'UltraCalc 2025 &gt;&gt;&gt; ';
+    promptLine.innerHTML = 'dCalc&gt; ';
     const input = document.createElement('input');
     input.type = 'text';
     input.id = 'prompt';
@@ -45,9 +49,19 @@ function addPrompt() {
 
             // Show output line after the prompt
             const outputLine = document.createElement('div');
-            outputLine.textContent = parse(input.value);
-            outputLine.style.color = '#888';
+            try {
+                outputLine.textContent = parse(input.value);
+            } catch (err) {
+                outputLine.textContent = "Error: " + (err.message || err);
+                outputLine.style.color = 'red';
+            }
+            outputLine.style.color = outputLine.style.color || '#888';
             terminal.appendChild(outputLine);
+            terminal.appendChild(outputLine);
+
+            const extraBlankLine = document.createElement('div');
+            extraBlankLine.innerHTML = '<br>';
+            terminal.appendChild(extraBlankLine);
 
             addPrompt();
             terminal.scrollTop = terminal.scrollHeight;
