@@ -1,6 +1,6 @@
 import { splitExpression } from './parser.js';
 import { topostfix } from './postfix.js';
-import { evalpostfix, format_out, parse } from './eval.js';
+import { evalpostfix, format_out } from './eval.js';
 
 export function evaluate(expr) {
     if (splitExpression(expr.replace(/ /g, "")).length < 2) {
